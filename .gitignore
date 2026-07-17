@@ -1,0 +1,24 @@
+# WordPress core - not tracked, only the custom theme is
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/xmlrpc.php
+/index.php
+/license.txt
+/readme.html
+wp-config.php
+
+# All wp-content except our custom theme
+/wp-content/*
+!/wp-content/themes/
+/wp-content/themes/*
+!/wp-content/themes/cadington/
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/cache/
+
+# Local dev / OS / editor cruft
+.DS_Store
+*.log
+node_modules/
+.env
