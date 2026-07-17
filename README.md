@@ -41,25 +41,20 @@ never show WordPress core or uploads as changed.
 
 ## Deploying to Hostinger
 
-Two ways to get theme changes onto Hostinger, depending on your plan:
+The Premium plan includes hPanel's native Git deploy feature.
 
-### Option A — hPanel Git deploy (Business/Cloud/VPS plans)
-
-1. In hPanel, go to **Advanced → Git**.
-2. Add this GitHub repo as a source, and set the deploy path to
+1. In hPanel, go to **Websites → [Cadington site] → Advanced → Git**.
+2. Click **Continue with GitHub**, authorize the Hostinger GitHub
+   extension, and select the `charleswinfield108/Cadington` repo.
+3. Set **Branch** to `main` and **Root directory** to
    `public_html/wp-content/themes/cadington`.
-3. Click **Deploy** (or enable auto-deploy) after each push to `main`.
+4. Enable auto-deploy so every push to `main` deploys automatically,
+   or click **Redeploy** to trigger one manually.
 
-### Option B — SFTP (Shared/Premium plans, no Git feature)
-
-1. Get SFTP credentials from hPanel → **Files → FTP Accounts**.
-2. In VS Code, install an SFTP extension (e.g. "SFTP" by Natizyskunk)
-   and point it at `public_html/wp-content/themes/cadington`.
-3. Use its "upload on save" or manual "sync local → remote" to push
-   changes after committing to git.
-
-Either way, GitHub stays the source of truth for the theme code —
-Hostinger just mirrors whatever was last deployed.
+GitHub stays the source of truth for the theme code — Hostinger just
+mirrors whatever was last deployed. Note: changing or disconnecting
+the linked repo later will overwrite files in that root directory on
+the next deploy, so don't repoint it casually once live.
 
 ## Backups
 
