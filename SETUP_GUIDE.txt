@@ -15,6 +15,7 @@ Placeholders to fill in before you start:
   [SITE_NAME]       e.g. Cadington
   [THEME_SLUG]      e.g. cadington  (lowercase, hyphens ok, no spaces)
   [GITHUB_REPO]     e.g. git@github.com:yourname/yoursite.git
+  [GITHUB_OWNER]    e.g. yourname (repo owner, for gh CLI commands)
   [LOCAL_PORT]      e.g. 8080  (pick something free if running
                     more than one site's containers at once)
   [HOSTINGER_PLAN]  fill in once you've checked hPanel (e.g. Premium)
@@ -69,7 +70,23 @@ PROMPT 3 — Commit and push the initial scaffold
 main."
 
 ----------------------------------------------------------------
-PROMPT 4 — Confirm Hostinger plan and deploy method
+PROMPT 4 — Set up a dev/main branching workflow
+----------------------------------------------------------------
+"Create a dev branch for day-to-day work and push it to origin.
+Enable branch protection on main (via gh api against
+[GITHUB_OWNER]/[SITE_NAME]) so it only accepts merges — no direct
+pushes, no force pushes, no branch deletion. No required review
+count is needed since this is a solo project. Update the README's
+git workflow section to say: all work happens on dev and gets tested
+locally, then merged into main via a pull request when ready —
+merging into main is what triggers Hostinger's auto-deploy."
+
+(This is proportionate for a solo project — skip full GitFlow with
+release/hotfix branches, that's built for teams coordinating
+multiple parallel releases.)
+
+----------------------------------------------------------------
+PROMPT 5 — Confirm Hostinger plan and deploy method
 ----------------------------------------------------------------
 "My Hostinger plan is [HOSTINGER_PLAN]. Confirm — don't guess, check
 current Hostinger docs — whether this plan supports hPanel's native
@@ -80,7 +97,7 @@ directory public_html/wp-content/themes/[THEME_SLUG] and branch
 main."
 
 ----------------------------------------------------------------
-STEP 5 (manual, then a prompt) — Start and verify the local environment
+STEP 6 (manual, then a prompt) — Start and verify the local environment
 ----------------------------------------------------------------
 Make sure Docker Desktop is running (on WSL2: Docker Desktop >
 Settings > Resources > WSL Integration must be enabled for this
@@ -92,14 +109,14 @@ docker ps and confirm the site responds at
 http://localhost:[LOCAL_PORT])."
 
 ----------------------------------------------------------------
-STEP 6 (manual) — Run the WordPress install wizard
+STEP 7 (manual) — Run the WordPress install wizard
 ----------------------------------------------------------------
 Visit http://localhost:[LOCAL_PORT], pick a language, enter a site
 title plus throwaway local admin credentials, and install. Log in
 and go to Appearance > Themes.
 
 ----------------------------------------------------------------
-PROMPT 7 — Verify the theme actually registers (don't just eyeball it)
+PROMPT 8 — Verify the theme actually registers (don't just eyeball it)
 ----------------------------------------------------------------
 "I'm in wp-admin but want to confirm [THEME_SLUG] is a valid,
 non-broken theme, not just visually present. Check via
@@ -111,19 +128,20 @@ instead of showing an error — a theme missing index.php will simply
 not appear, with no visible reason why.)
 
 ----------------------------------------------------------------
-PROMPT 8 — Add a theme screenshot placeholder
+PROMPT 9 — Add a theme screenshot placeholder
 ----------------------------------------------------------------
 "Generate a simple placeholder screenshot.png (1200x900) for the
 [THEME_SLUG] theme so it doesn't show a blank tile in Appearance >
 Themes."
 
 ----------------------------------------------------------------
-PROMPT 9 — Commit and push any local fixes
+PROMPT 10 — Commit and push any local fixes
 ----------------------------------------------------------------
-"Commit and push the theme fixes to [GITHUB_REPO]."
+"Commit and push these fixes on dev, then open a PR into main and
+merge it (gh pr create --base main --head dev, then gh pr merge)."
 
 ----------------------------------------------------------------
-STEP 10 (manual) — Create the WordPress website on Hostinger
+STEP 11 (manual) — Create the WordPress website on Hostinger
 ----------------------------------------------------------------
 A website must exist in hPanel before you can connect Git deploy —
 this is where WordPress core + database actually live (remember,
@@ -131,7 +149,7 @@ those are NOT in the git repo).
 
 hPanel > Websites > Add website > WordPress
 1. Set the WordPress admin email and password — these are the real
-   production credentials, not the throwaway local ones from Step 6.
+   production credentials, not the throwaway local ones from Step 7.
 2. Choose "start with a blank WordPress installation" (skip AI
    content generation — the custom theme handles that).
 3. Domain step: if you don't have a real domain yet, click "Use a
@@ -142,7 +160,7 @@ hPanel > Websites > Add website > WordPress
    it loaded.
 
 ----------------------------------------------------------------
-STEP 11 (manual) — Connect Hostinger's Git deploy to this repo
+STEP 12 (manual) — Connect Hostinger's Git deploy to this repo
 ----------------------------------------------------------------
 hPanel > Websites > [SITE_NAME] > Advanced > Git > "Continue with
 GitHub" > authorize the Hostinger GitHub extension > select
@@ -173,15 +191,15 @@ Troubleshooting:
   at the repo root.
 
 ----------------------------------------------------------------
-PROMPT 12 — Ongoing updates (repeat this loop going forward)
+PROMPT 13 — Ongoing updates (repeat this loop going forward)
 ----------------------------------------------------------------
-"I changed [describe the change] in the [THEME_SLUG] theme. Verify
-it works locally (docker compose, refresh
-http://localhost:[LOCAL_PORT]), then commit and push to
-[GITHUB_REPO] main so it deploys to Hostinger."
+"I changed [describe the change] in the [THEME_SLUG] theme on the
+dev branch. Verify it works locally (docker compose, refresh
+http://localhost:[LOCAL_PORT]), then commit and push to dev, open a
+PR into main, and merge it so it deploys to Hostinger."
 
 If auto-deploy is off, also visit hPanel > Advanced > Git and click
-Redeploy after pushing.
+Redeploy after merging.
 
 ----------------------------------------------------------------
 LESSONS BUILT INTO THIS TEMPLATE
@@ -217,6 +235,10 @@ LESSONS BUILT INTO THIS TEMPLATE
   but hPanel never shows the repo/branch picker), uninstalling and
   reinstalling the app from github.com/settings/installations
   usually clears it.
+- main is protected and only takes merges (no direct pushes), since
+  it's what Hostinger auto-deploys from — all day-to-day work
+  happens on dev. A solo project doesn't need full GitFlow, just
+  this one extra branch and a merge step.
 
 ----------------------------------------------------------------
 NEXT STEPS / ADDITIONS (append future prompts here)

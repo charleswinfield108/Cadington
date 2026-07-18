@@ -37,11 +37,22 @@ docker compose down -v
 
 ## Git workflow
 
+`main` is protected — it only auto-deploys to Hostinger and doesn't
+accept direct pushes. Do all work on `dev`, then merge to `main` via
+a pull request when it's ready to go live.
+
 ```bash
+git checkout dev
+# ...edit, test locally...
 git add .
 git commit -m "..."
 git push
 ```
+
+Then open a pull request from `dev` into `main` on GitHub (or run
+`gh pr create --base main --head dev`) and merge it once you're
+satisfied it's ready for production. Merging to `main` triggers the
+Hostinger deploy.
 
 ## Deploying to Hostinger
 
