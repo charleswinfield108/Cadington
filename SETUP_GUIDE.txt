@@ -37,25 +37,30 @@ If the local project folder isn't a git repo yet:
 PROMPT 2 — Scaffold the theme + repo structure
 ----------------------------------------------------------------
 "I want to build a new WordPress site called [SITE_NAME], developed
-in this repo and eventually deployed to Hostinger. Set it up so the
-git repo tracks ONLY a custom theme at
-wp-content/themes/[THEME_SLUG] — WordPress core, plugins, and the
-database should NOT be version-controlled. Please:
-1. Add a .gitignore that ignores WP core files/folders and all of
-   wp-content except wp-content/themes/[THEME_SLUG]
-2. Create a minimal working theme skeleton at
-   wp-content/themes/[THEME_SLUG]/ with style.css (theme header),
-   functions.php (basic theme supports + nav menu + enqueue),
-   index.php, header.php, and footer.php — enough to register as a
-   valid, non-broken WordPress theme with a working Loop
+in this repo and eventually deployed to Hostinger. The repo root
+itself should BE the custom theme (style.css, functions.php, etc.
+directly at the repo root, not nested under a wp-content/themes/
+path) — this matters because Hostinger's Git deploy copies the
+entire repo verbatim into whatever directory you point it at, with
+no way to deploy only a subfolder of the repo. WordPress core,
+plugins, and the database should NOT be version-controlled. Please:
+1. Create a minimal working theme skeleton at the repo root:
+   style.css (theme header), functions.php (basic theme supports +
+   nav menu + enqueue), index.php, header.php, and footer.php —
+   enough to register as a valid, non-broken WordPress theme with a
+   working Loop
+2. Add a .gitignore for OS/editor cruft (.DS_Store, node_modules,
+   .env) — nothing WordPress-core-related needs excluding since the
+   repo only ever contains the theme
 3. Add a docker-compose.yml for local development using the official
    wordpress and mysql:8.0 images, exposing port [LOCAL_PORT], with
-   the theme folder bind-mounted into the container so edits in
-   VS Code show up without a rebuild
+   the whole repo bind-mounted into the container's
+   wp-content/themes/[THEME_SLUG] directory so edits in VS Code show
+   up without a rebuild
 4. Write a README.md covering: local dev instructions, the git
-   workflow (only the theme is tracked), a placeholder Hostinger
-   deploy section (to fill in once I confirm my plan), and a note
-   that git backs up code only, not the database/uploads"
+   workflow, a placeholder Hostinger deploy section (to fill in once
+   I confirm my plan), and a note that git backs up code only, not
+   the database/uploads"
 
 ----------------------------------------------------------------
 PROMPT 3 — Commit and push the initial scaffold
@@ -149,6 +154,24 @@ Caution: changing/disconnecting the linked repo later overwrites
 files in that root directory on the next deploy — don't repoint it
 casually once the site is live.
 
+Troubleshooting:
+- "Connect with GitHub" greyed out / "Disabled because you are
+  impersonating user account": you're viewing hPanel through
+  impersonation (a banner at the top says "Impersonate mode"). Click
+  Exit and log into the account directly — OAuth connections are
+  blocked during impersonation.
+- Connected the GitHub App but hPanel's Git page still just shows
+  "Connect with GitHub" instead of a repo/branch/directory picker:
+  the handshake likely got stuck. Go to
+  github.com/settings/installations, uninstall the Hostinger app,
+  then retry "Connect with GitHub" from hPanel from scratch in one
+  continuous flow (avoid navigating to other GitHub settings pages
+  mid-flow).
+- Theme shows under wp-admin > Appearance > Themes > "Broken Themes"
+  with "Stylesheet is missing" after a deploy: this is the
+  nested-path issue described above in Prompt 2 — the theme wasn't
+  at the repo root.
+
 ----------------------------------------------------------------
 PROMPT 12 — Ongoing updates (repeat this loop going forward)
 ----------------------------------------------------------------
@@ -180,6 +203,20 @@ LESSONS BUILT INTO THIS TEMPLATE
   Add website > WordPress) before Advanced > Git even has anywhere
   to point. A temporary domain lets you do this before owning a
   real domain.
+- Hostinger's Git deploy has no concept of "deploy only this
+  subfolder of the repo" — the root directory field is purely the
+  DESTINATION. It copies the whole repo there. So the repo's own
+  root must already look like the theme (style.css etc. at the top
+  level), not nested under wp-content/themes/[slug]/ inside the
+  repo, or you get a doubly-nested path and a "Stylesheet is
+  missing" broken theme on the server.
+- hPanel's "impersonate mode" (viewing an account on someone else's
+  behalf) silently disables OAuth connections like Git's
+  "Connect with GitHub" — exit impersonation and log in directly.
+- If a GitHub App connection gets stuck (installed on GitHub's side
+  but hPanel never shows the repo/branch picker), uninstalling and
+  reinstalling the app from github.com/settings/installations
+  usually clears it.
 
 ----------------------------------------------------------------
 NEXT STEPS / ADDITIONS (append future prompts here)
