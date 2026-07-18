@@ -1,9 +1,15 @@
 # Cadington
 
-WordPress site. This repo tracks only the custom theme
-(`wp-content/themes/cadington`) — WordPress core, plugins, and the
-database are not version-controlled; they live on the server and are
-managed through wp-admin.
+WordPress theme repo. This repo *is* the custom theme — its root
+maps directly onto `wp-content/themes/cadington` on the server.
+WordPress core, plugins, and the database are not version-controlled;
+they live on the server and are managed through wp-admin.
+
+(The repo root = the theme, rather than nesting it under a
+`wp-content/themes/cadington/` path inside the repo, because
+Hostinger's Git deploy copies the entire repo verbatim into whatever
+directory you point it at — it has no way to deploy only a subfolder
+of the repo.)
 
 ## Local development
 
@@ -18,8 +24,9 @@ Visit `http://localhost:8080` and complete the WordPress install (any
 throwaway admin credentials — this is a local sandbox). Then in
 wp-admin → Appearance → Themes, activate **Cadington**.
 
-Edit files under `wp-content/themes/cadington/` in VS Code — the
-container mounts that folder directly, so changes appear on refresh
+Edit files in this repo's root in VS Code (style.css, functions.php,
+index.php, header.php, footer.php) — the container mounts the whole
+repo directly into the theme directory, so changes appear on refresh
 with no rebuild step.
 
 To reset the local site (wipe DB and uploads):
@@ -31,30 +38,28 @@ docker compose down -v
 ## Git workflow
 
 ```bash
-git add wp-content/themes/cadington
+git add .
 git commit -m "..."
 git push
 ```
-
-Only theme files are tracked (see `.gitignore`), so `git status` should
-never show WordPress core or uploads as changed.
 
 ## Deploying to Hostinger
 
 The Premium plan includes hPanel's native Git deploy feature.
 
 1. In hPanel, go to **Websites → [Cadington site] → Advanced → Git**.
-2. Click **Continue with GitHub**, authorize the Hostinger GitHub
-   extension, and select the `charleswinfield108/Cadington` repo.
+2. Click **Connect with GitHub**, authorize the Hostinger GitHub App,
+   and select the `charleswinfield108/Cadington` repo.
 3. Set **Branch** to `main` and **Root directory** to
    `public_html/wp-content/themes/cadington`.
 4. Enable auto-deploy so every push to `main` deploys automatically,
    or click **Redeploy** to trigger one manually.
 
 GitHub stays the source of truth for the theme code — Hostinger just
-mirrors whatever was last deployed. Note: changing or disconnecting
-the linked repo later will overwrite files in that root directory on
-the next deploy, so don't repoint it casually once live.
+mirrors whatever was last deployed into that directory. Note:
+changing or disconnecting the linked repo later will overwrite files
+in that root directory on the next deploy, so don't repoint it
+casually once live.
 
 ## Backups
 

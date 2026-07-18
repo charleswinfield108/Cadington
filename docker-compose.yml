@@ -10,7 +10,7 @@ services:
       WORDPRESS_DB_NAME: wordpress
     volumes:
       - wordpress_data:/var/www/html
-      - ./wp-content/themes/cadington:/var/www/html/wp-content/themes/cadington
+      - .:/var/www/html/wp-content/themes/cadington
     depends_on:
       - db
 

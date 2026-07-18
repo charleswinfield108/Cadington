@@ -1,0 +1,187 @@
+WORDPRESS SITE TEMPLATE — GITHUB -> LOCAL BUILD -> HOSTINGER -> UPDATES
+(A reusable sequence of prompts to paste into Claude Code, one at a
+time, for any future WordPress site.)
+================================================================
+
+HOW TO USE THIS GUIDE
+----------------------------------------------------------------
+Fill in the placeholders once per new site, then paste each
+numbered prompt into Claude Code in order. Let each step finish
+(and check it actually worked — load the page, check docker ps,
+etc.) before pasting the next one. Steps marked "(manual)" happen
+outside Claude Code (browser/GitHub/hPanel), not as a prompt.
+
+Placeholders to fill in before you start:
+  [SITE_NAME]       e.g. Cadington
+  [THEME_SLUG]      e.g. cadington  (lowercase, hyphens ok, no spaces)
+  [GITHUB_REPO]     e.g. git@github.com:yourname/yoursite.git
+  [LOCAL_PORT]      e.g. 8080  (pick something free if running
+                    more than one site's containers at once)
+  [HOSTINGER_PLAN]  fill in once you've checked hPanel (e.g. Premium)
+  [DOMAIN]          the live domain once it's pointed at Hostinger
+  [TEMP_DOMAIN]     Hostinger's temporary domain (e.g.
+                    yoursite.hostingersite.com), if not using a real
+                    domain yet
+
+----------------------------------------------------------------
+STEP 1 (manual) — Create the GitHub repository
+----------------------------------------------------------------
+On github.com, create a new empty repository for [SITE_NAME].
+Copy its SSH remote URL into [GITHUB_REPO] above.
+
+If the local project folder isn't a git repo yet:
+  git init
+  git remote add origin [GITHUB_REPO]
+
+----------------------------------------------------------------
+PROMPT 2 — Scaffold the theme + repo structure
+----------------------------------------------------------------
+"I want to build a new WordPress site called [SITE_NAME], developed
+in this repo and eventually deployed to Hostinger. Set it up so the
+git repo tracks ONLY a custom theme at
+wp-content/themes/[THEME_SLUG] — WordPress core, plugins, and the
+database should NOT be version-controlled. Please:
+1. Add a .gitignore that ignores WP core files/folders and all of
+   wp-content except wp-content/themes/[THEME_SLUG]
+2. Create a minimal working theme skeleton at
+   wp-content/themes/[THEME_SLUG]/ with style.css (theme header),
+   functions.php (basic theme supports + nav menu + enqueue),
+   index.php, header.php, and footer.php — enough to register as a
+   valid, non-broken WordPress theme with a working Loop
+3. Add a docker-compose.yml for local development using the official
+   wordpress and mysql:8.0 images, exposing port [LOCAL_PORT], with
+   the theme folder bind-mounted into the container so edits in
+   VS Code show up without a rebuild
+4. Write a README.md covering: local dev instructions, the git
+   workflow (only the theme is tracked), a placeholder Hostinger
+   deploy section (to fill in once I confirm my plan), and a note
+   that git backs up code only, not the database/uploads"
+
+----------------------------------------------------------------
+PROMPT 3 — Commit and push the initial scaffold
+----------------------------------------------------------------
+"Commit this initial scaffold and push it to [GITHUB_REPO] on
+main."
+
+----------------------------------------------------------------
+PROMPT 4 — Confirm Hostinger plan and deploy method
+----------------------------------------------------------------
+"My Hostinger plan is [HOSTINGER_PLAN]. Confirm — don't guess, check
+current Hostinger docs — whether this plan supports hPanel's native
+Git deploy feature under Advanced > Git, or whether I need an
+SFTP-based deploy workflow instead. Then update the README's deploy
+section with the exact steps for whichever applies, using root
+directory public_html/wp-content/themes/[THEME_SLUG] and branch
+main."
+
+----------------------------------------------------------------
+STEP 5 (manual, then a prompt) — Start and verify the local environment
+----------------------------------------------------------------
+Make sure Docker Desktop is running (on WSL2: Docker Desktop >
+Settings > Resources > WSL Integration must be enabled for this
+distro). Then paste:
+
+"Run docker compose up -d and verify — don't just assume it worked
+— that WordPress is actually up and can reach the database (check
+docker ps and confirm the site responds at
+http://localhost:[LOCAL_PORT])."
+
+----------------------------------------------------------------
+STEP 6 (manual) — Run the WordPress install wizard
+----------------------------------------------------------------
+Visit http://localhost:[LOCAL_PORT], pick a language, enter a site
+title plus throwaway local admin credentials, and install. Log in
+and go to Appearance > Themes.
+
+----------------------------------------------------------------
+PROMPT 7 — Verify the theme actually registers (don't just eyeball it)
+----------------------------------------------------------------
+"I'm in wp-admin but want to confirm [THEME_SLUG] is a valid,
+non-broken theme, not just visually present. Check via
+wp_get_themes() and wp_get_themes(array('errors' => true)) inside
+the container, and fix anything it flags."
+
+(WordPress hides broken themes from the Appearance > Themes list
+instead of showing an error — a theme missing index.php will simply
+not appear, with no visible reason why.)
+
+----------------------------------------------------------------
+PROMPT 8 — Add a theme screenshot placeholder
+----------------------------------------------------------------
+"Generate a simple placeholder screenshot.png (1200x900) for the
+[THEME_SLUG] theme so it doesn't show a blank tile in Appearance >
+Themes."
+
+----------------------------------------------------------------
+PROMPT 9 — Commit and push any local fixes
+----------------------------------------------------------------
+"Commit and push the theme fixes to [GITHUB_REPO]."
+
+----------------------------------------------------------------
+STEP 10 (manual) — Create the WordPress website on Hostinger
+----------------------------------------------------------------
+A website must exist in hPanel before you can connect Git deploy —
+this is where WordPress core + database actually live (remember,
+those are NOT in the git repo).
+
+hPanel > Websites > Add website > WordPress
+1. Set the WordPress admin email and password — these are the real
+   production credentials, not the throwaway local ones from Step 6.
+2. Choose "start with a blank WordPress installation" (skip AI
+   content generation — the custom theme handles that).
+3. Domain step: if you don't have a real domain yet, click "Use a
+   temporary domain" to get something like [TEMP_DOMAIN]
+   (e.g. yoursite.hostingersite.com). Otherwise select/purchase the
+   real domain.
+4. Wait for install to finish, then click "Admin Panel" to confirm
+   it loaded.
+
+----------------------------------------------------------------
+STEP 11 (manual) — Connect Hostinger's Git deploy to this repo
+----------------------------------------------------------------
+hPanel > Websites > [SITE_NAME] > Advanced > Git > "Continue with
+GitHub" > authorize the Hostinger GitHub extension > select
+[GITHUB_REPO] > Branch = main > Root directory =
+public_html/wp-content/themes/[THEME_SLUG] > enable auto-deploy (or
+click Redeploy manually).
+
+Caution: changing/disconnecting the linked repo later overwrites
+files in that root directory on the next deploy — don't repoint it
+casually once the site is live.
+
+----------------------------------------------------------------
+PROMPT 12 — Ongoing updates (repeat this loop going forward)
+----------------------------------------------------------------
+"I changed [describe the change] in the [THEME_SLUG] theme. Verify
+it works locally (docker compose, refresh
+http://localhost:[LOCAL_PORT]), then commit and push to
+[GITHUB_REPO] main so it deploys to Hostinger."
+
+If auto-deploy is off, also visit hPanel > Advanced > Git and click
+Redeploy after pushing.
+
+----------------------------------------------------------------
+LESSONS BUILT INTO THIS TEMPLATE
+----------------------------------------------------------------
+- A WordPress theme needs at least style.css (with a Theme Name
+  header) AND index.php to register — style.css + functions.php
+  alone fails silently, with no error shown in wp-admin.
+- WordPress hides "broken" themes from Appearance > Themes instead
+  of erroring loudly — use
+  wp_get_themes(array('errors' => true)) to see why one is missing.
+- Hostinger's Git deploy feature availability depends on plan tier
+  and can change over time — always confirm current docs rather
+  than assuming it's Business/Cloud-only.
+- git/GitHub backs up theme CODE only. The database and uploads
+  need a separate backup mechanism (Hostinger's backup feature or a
+  plugin like UpdraftPlus).
+- Hostinger's Git deploy feature attaches to an existing website —
+  you must create the WordPress site in hPanel first (Websites >
+  Add website > WordPress) before Advanced > Git even has anywhere
+  to point. A temporary domain lets you do this before owning a
+  real domain.
+
+----------------------------------------------------------------
+NEXT STEPS / ADDITIONS (append future prompts here)
+----------------------------------------------------------------
+- [ ] (add further steps here as new needs come up)
