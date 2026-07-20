@@ -8,6 +8,26 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <header>
-	<h1><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></h1>
-	<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+	<div class="header-inner">
+		<div class="header-left">
+			<a class="site-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+				<?php
+				// Inlined (rather than <img src>) so the logo's text can use the
+				// same @font-face fonts declared in style.css — an SVG loaded via
+				// <img> is opaque and can't see the page's fonts/CSS at all.
+				echo file_get_contents( get_stylesheet_directory() . '/assets/images/cadington1_logo.svg' );
+				?>
+			</a>
+		</div>
+		<div class="header-right">
+			<nav class="primary-nav" aria-label="Primary">
+				<ul>
+					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#services">Services</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
 </header>

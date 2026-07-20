@@ -3,3 +3,6 @@
 *.log
 node_modules/
 .env
+
+# Design reference material, not part of the deployed theme
+/Mood Board/
