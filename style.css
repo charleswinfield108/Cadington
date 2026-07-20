@@ -188,6 +188,27 @@ header nav a {
 	text-decoration: none;
 }
 
+@media (max-width: 600px) {
+	header {
+		height: 72px;
+		padding: 0 1rem;
+	}
+
+	body:not(.home) {
+		padding-top: 72px;
+	}
+
+	.site-logo svg {
+		height: 26px;
+	}
+
+	header nav ul {
+		gap: 0.5rem;
+		font-size: 10px;
+		letter-spacing: 0.02em;
+	}
+}
+
 /* Transparent nav overlaying the hero, homepage only, until scrolled */
 body.home header {
 	background: transparent;
@@ -335,7 +356,7 @@ body.admin-bar header {
 
 .about-row {
 	display: grid;
-	grid-template-columns: 2.4fr 1fr;
+	grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr);
 	gap: 1.5rem;
 	align-items: stretch;
 	margin-top: 2.5rem;
@@ -424,7 +445,16 @@ body.admin-bar header {
 
 @media (max-width: 768px) {
 	.about-row {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.about-text-box {
+		height: auto;
+		min-height: 400px;
+	}
+
+	.about-name {
+		white-space: normal;
 	}
 }
 
@@ -547,6 +577,14 @@ body.admin-bar header {
 	.hero-video {
 		display: none;
 	}
+
+	.hero-tagline {
+		max-width: 100%;
+	}
+
+	.hero h1 {
+		font-size: clamp(2rem, 9.5vw, 7.15rem);
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -640,7 +678,7 @@ body.admin-bar header {
 
 .services-grid {
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 3rem 3.5rem;
 	margin-top: 1rem;
 }
@@ -654,12 +692,18 @@ body.admin-bar header {
 	box-shadow: 0 20px 40px rgba(32, 28, 34, 0.1);
 }
 
+.service-text {
+	min-width: 0;
+}
+
 .service-card h3 {
 	font-family: 'Nunito Sans', sans-serif;
 	text-transform: uppercase;
 	font-weight: 700;
 	font-size: 20px;
 	margin: 0 0 0.5rem;
+	overflow-wrap: anywhere;
+	hyphens: auto;
 }
 
 .service-card:nth-child(odd) h3 {
@@ -703,7 +747,7 @@ body.admin-bar header {
 
 @media (max-width: 768px) {
 	.services-grid {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 	}
 }
 
@@ -840,7 +884,7 @@ body.admin-bar header {
 
 .contact-form-row-group {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	gap: 1.5rem;
 }
 
@@ -856,7 +900,7 @@ body.admin-bar header {
 
 .contact-form-checkboxes {
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.6rem 1.5rem;
 }
 
@@ -864,6 +908,7 @@ body.admin-bar header {
 	display: flex;
 	align-items: center;
 	gap: 0.6rem;
+	overflow-wrap: anywhere;
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 0.95rem;
 	color: #fff;
