@@ -909,24 +909,24 @@ body.admin-bar header {
 }
 
 .contact-form-panel .wpforms-submit-container .wpforms-submit {
-	display: inline-block;
-	width: 100%;
-	padding: 0.85rem 2rem;
-	border: 3px solid #fff;
-	color: #fff;
-	background: transparent;
-	text-transform: uppercase;
-	font-family: 'Nunito Sans', sans-serif;
-	font-size: 0.8rem;
-	letter-spacing: 0.1em;
-	font-weight: 600;
-	border-radius: 0;
+	display: inline-block !important;
+	width: 100% !important;
+	padding: 0.85rem 2rem !important;
+	border: 3px solid #fff !important;
+	color: #fff !important;
+	background: transparent !important;
+	text-transform: uppercase !important;
+	font-family: 'Nunito Sans', sans-serif !important;
+	font-size: 0.8rem !important;
+	letter-spacing: 0.1em !important;
+	font-weight: 600 !important;
+	border-radius: 0 !important;
 	cursor: pointer;
 }
 
 .contact-form-panel .wpforms-submit-container .wpforms-submit:hover {
-	background: #fff;
-	color: var(--ink);
+	background: #fff !important;
+	color: var(--ink) !important;
 }
 
 @media (max-width: 600px) {
