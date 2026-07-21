@@ -861,6 +861,8 @@ body.admin-bar header {
 	font-size: 0.85rem !important;
 	letter-spacing: 0.06em !important;
 	color: rgba(255, 255, 255, 0.9) !important;
+	text-align: left !important;
+	display: block !important;
 }
 
 .contact-form-panel .wpforms-field-required {
