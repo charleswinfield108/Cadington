@@ -149,49 +149,10 @@
 			<h2 class="section-heading">Get in Touch</h2>
 			<p class="section-lead">Have questions or want to learn more about how we can help?</p>
 
-			<?php if ( isset( $_GET['contact'] ) && 'success' === $_GET['contact'] ) : ?>
-				<p class="form-notice form-notice--success">Thanks &mdash; your message has been sent. We&rsquo;ll be in touch soon.</p>
-			<?php elseif ( isset( $_GET['contact'] ) && 'error' === $_GET['contact'] ) : ?>
-				<p class="form-notice form-notice--error">Something went wrong sending your message. Please fill in all fields with a valid email, or reach us directly at <a href="mailto:admin@cadington.com">admin@cadington.com</a>.</p>
-			<?php endif; ?>
-
 			<div class="contact-form-panel">
 				<span class="contact-form-panel-accent contact-form-panel-accent--tl" aria-hidden="true"></span>
 				<span class="contact-form-panel-accent contact-form-panel-accent--br" aria-hidden="true"></span>
-				<form class="contact-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-					<input type="hidden" name="action" value="cadington_contact">
-					<?php wp_nonce_field( 'cadington_contact', 'cadington_contact_nonce' ); ?>
-					<div class="contact-form-honeypot" aria-hidden="true">
-						<label for="cadington_website">Website</label>
-						<input type="text" id="cadington_website" name="cadington_website" tabindex="-1" autocomplete="off">
-					</div>
-					<div class="contact-form-row-group">
-						<div class="contact-form-row">
-							<label for="cadington_name">Name</label>
-							<input type="text" id="cadington_name" name="cadington_name" required>
-						</div>
-						<div class="contact-form-row">
-							<label for="cadington_email">Email</label>
-							<input type="email" id="cadington_email" name="cadington_email" required>
-						</div>
-					</div>
-					<div class="contact-form-row">
-						<span class="contact-form-label">I&rsquo;m interested in&hellip;</span>
-						<div class="contact-form-checkboxes">
-							<label><input type="checkbox" name="cadington_services[]" value="Notary"> Notary</label>
-							<label><input type="checkbox" name="cadington_services[]" value="Rental Assistance"> Rental Assistance</label>
-							<label><input type="checkbox" name="cadington_services[]" value="Food Assistance"> Food Assistance</label>
-							<label><input type="checkbox" name="cadington_services[]" value="Utilities Assistance"> Utilities Assistance</label>
-							<label><input type="checkbox" name="cadington_services[]" value="Job Assistance"> Job Assistance</label>
-							<label><input type="checkbox" name="cadington_services[]" value="Mental/Behavioral Health Assistance"> Mental/Behavioral Health Assistance</label>
-						</div>
-					</div>
-					<div class="contact-form-row">
-						<label for="cadington_message">Message</label>
-						<textarea id="cadington_message" name="cadington_message" rows="5" required></textarea>
-					</div>
-					<button type="submit" class="button button--invert">Send Message</button>
-				</form>
+				<?php echo do_shortcode( '[wpforms id="6"]' ); ?>
 			</div>
 		</div>
 	</section>
