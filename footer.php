@@ -1,7 +1,9 @@
 <footer class="site-footer">
 	<div class="footer-columns">
 		<div class="footer-col">
-			<h3><?php bloginfo( 'name' ); ?></h3>
+			<a class="footer-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+				<?php echo file_get_contents( get_stylesheet_directory() . '/assets/images/cadington1_logo.svg' ); ?>
+			</a>
 			<p>Connecting individuals, families, and organizations with essential resources, guidance, and structured support.</p>
 		</div>
 		<div class="footer-col">
