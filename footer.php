@@ -19,8 +19,8 @@
 		<div class="footer-col">
 			<h3>Contact</h3>
 			<ul>
-				<li><a href="mailto:info@cadington.com">info@cadington.com</a></li>
-				<li><a href="tel:+10000000000">(000) 000-0000</a></li>
+				<li><a href="mailto:admin@cadington.com">admin@cadington.com</a></li>
+				<li><a href="tel:+18138161503">813-816-1503</a></li>
 			</ul>
 		</div>
 	</div>

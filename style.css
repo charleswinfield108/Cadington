@@ -962,6 +962,7 @@ body.admin-bar header {
 .footer-logo {
 	display: inline-flex;
 	margin-bottom: 1rem;
+	margin-left: -12px;
 }
 
 .footer-logo svg {
