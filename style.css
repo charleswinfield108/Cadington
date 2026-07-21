@@ -854,12 +854,17 @@ body.admin-bar header {
 
 .contact-form-panel .wpforms-field-label,
 .contact-form-panel .wpforms-field-label-inline,
-.contact-form-panel legend.wpforms-field-label {
-	font-family: 'Nunito Sans', sans-serif;
-	text-transform: uppercase;
-	font-size: 0.85rem;
-	letter-spacing: 0.06em;
-	color: rgba(255, 255, 255, 0.9);
+.contact-form-panel legend.wpforms-field-label,
+.contact-form-panel .wpforms-field-sublabel {
+	font-family: 'Nunito Sans', sans-serif !important;
+	text-transform: uppercase !important;
+	font-size: 0.85rem !important;
+	letter-spacing: 0.06em !important;
+	color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.contact-form-panel .wpforms-field-required {
+	color: var(--pink) !important;
 }
 
 .contact-form-panel .wpforms-field input[type='text'],
@@ -892,9 +897,9 @@ body.admin-bar header {
 }
 
 .contact-form-panel .wpforms-field-checkbox label {
-	font-family: 'Nunito Sans', sans-serif;
-	font-size: 0.95rem;
-	color: #fff;
+	font-family: 'Nunito Sans', sans-serif !important;
+	font-size: 0.95rem !important;
+	color: #fff !important;
 	overflow-wrap: anywhere;
 }
 
