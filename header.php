@@ -20,7 +20,12 @@
 			</a>
 		</div>
 		<div class="header-right">
-			<nav class="primary-nav" aria-label="Primary">
+			<button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<nav class="primary-nav" id="primary-nav" aria-label="Primary">
 				<ul>
 					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
 					<li><a href="#about">About</a></li>
